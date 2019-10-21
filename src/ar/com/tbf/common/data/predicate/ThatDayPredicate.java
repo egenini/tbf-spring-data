@@ -43,7 +43,7 @@ public class ThatDayPredicate implements SpecificPredicate{
 			predicate = builder.between( from.<Date>get(key), init.getTime(), end.getTime() );
 
 		}catch( Exception e ) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 		return predicate;	
