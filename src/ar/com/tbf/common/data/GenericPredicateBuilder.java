@@ -14,6 +14,11 @@ public class GenericPredicateBuilder {
 	List<Predicate> predicates = null;
 	CriteriaBuilder builder;
 	
+	public List<Predicate> getPredicates(){
+		
+		return predicates;
+	}
+	
 	public GenericPredicateBuilder withBuilder( CriteriaBuilder builder ) {
 		
 		this.builder = builder;
