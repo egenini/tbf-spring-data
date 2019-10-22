@@ -1,6 +1,10 @@
 package ar.com.tbf.common.data.predicate;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -10,9 +14,9 @@ import javax.persistence.criteria.Predicate;
 
 public class ThatMonthPredicate implements SpecificPredicate{
 
-	private DateFormat dateformat;
+	private DateTimeFormatter dateformat;
 	
-	public ThatMonthPredicate( DateFormat dateformat ) {
+	public ThatMonthPredicate( DateTimeFormatter dateformat ) {
 		
 		this.dateformat = dateformat;
 	}
@@ -22,16 +26,13 @@ public class ThatMonthPredicate implements SpecificPredicate{
 		Predicate predicate = null;
 		
 		try {
-			Calendar init = Calendar.getInstance();
 			
-			init.setTime( dateformat.parse( (String) value ) );
+			Timestamp date = Timestamp.valueOf( YearMonth.parse( (CharSequence)value, dateformat).atDay(1).atStartOfDay() );
+			
+			Calendar init = Calendar.getInstance(  );
+			
+			init.setTime( date );
 
-			init.set( Calendar.DAY_OF_MONTH, 1);
-			init.set( Calendar.HOUR        , 0);
-			init.set( Calendar.MINUTE      , 0);
-			init.set( Calendar.SECOND      , 0);
-			init.set( Calendar.MILLISECOND , 0);
-			
 			Calendar end = Calendar.getInstance();
 			
 			end.setTime( init.getTime() );

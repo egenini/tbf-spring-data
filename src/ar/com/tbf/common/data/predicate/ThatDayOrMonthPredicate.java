@@ -1,6 +1,7 @@
 package ar.com.tbf.common.data.predicate;
 
 import java.text.DateFormat;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.From;
@@ -11,7 +12,7 @@ public class ThatDayOrMonthPredicate implements SpecificPredicate{
 	private ThatDayPredicate   thatDayPredicate;
 	private ThatMonthPredicate ThatMonthPredicate;
 	
-	public ThatDayOrMonthPredicate( DateFormat dateformat, DateFormat monthformat ) {
+	public ThatDayOrMonthPredicate( DateFormat dateformat, DateTimeFormatter monthformat ) {
 
 		thatDayPredicate   = new ThatDayPredicate(   dateformat  );
 		ThatMonthPredicate = new ThatMonthPredicate( monthformat );
