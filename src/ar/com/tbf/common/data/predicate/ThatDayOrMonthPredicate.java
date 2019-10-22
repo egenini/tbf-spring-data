@@ -11,11 +11,10 @@ public class ThatDayOrMonthPredicate implements SpecificPredicate{
 	private ThatDayPredicate   thatDayPredicate;
 	private ThatMonthPredicate ThatMonthPredicate;
 	
-	public ThatDayOrMonthPredicate( DateFormat dateformat ) {
+	public ThatDayOrMonthPredicate( DateFormat dateformat, DateFormat monthformat ) {
 
-		thatDayPredicate   = new ThatDayPredicate( dateformat );
-		ThatMonthPredicate = new ThatMonthPredicate( dateformat );
-		
+		thatDayPredicate   = new ThatDayPredicate(   dateformat  );
+		ThatMonthPredicate = new ThatMonthPredicate( monthformat );
 	}
 
 	public Predicate build( final From<?, ?> from, CriteriaBuilder builder, String key, Object value ) {
