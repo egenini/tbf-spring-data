@@ -53,43 +53,52 @@ public class GenericPredicateBuilder {
 	
 	public GenericPredicateBuilder make( SearchOperation operation, From<?, ?> from, String key ,Object value ) {
 		
-		if( AttributePredicateHelperAccessibility.has( key ) ) {
+		try {
 			
-			predicates.add( AttributePredicateHelperAccessibility.get( key ).build(from, builder, key, value )  );
-		}
-		else {
-			
-			switch ( operation ) {
-			
-			case EQUALITY:
-				predicates.add( builder.equal(       from.get(key), value            ) );
-				break;
-			case NEGATION:
-				predicates.add( builder.notEqual(    from.get(key), value            ) );
-				break;
-			case GREATER_THAN:
-				predicates.add( builder.greaterThan( from.get(key), value.toString() ) );
-				break;
-			case LESS_THAN:
-				predicates.add( builder.lessThan(    from.get(key), value.toString() ) );
-				break;
-			case LIKE:
-				predicates.add( builder.like(        from.get(key), "%"+ value +"%"  ) );
-				break;
-			case STARTS_WITH:
-				predicates.add( builder.like(        from.get(key), value +"%"       ) );
-				break;
-			case ENDS_WITH:
-				predicates.add( builder.like(        from.get(key), "%"+ value       ) );
-				break;
-			case CONTAINS:
-				predicates.add( builder.like(        from.get(key), "%"+ value +"%"  ) );
-				break;
-			default:
-				break;
+			if( AttributePredicateHelperAccessibility.has( key ) ) {
+				
+				predicates.add( AttributePredicateHelperAccessibility.get( key ).build(from, builder, key, value )  );
+			}
+			else {
+				
+				switch ( operation ) {
+				
+				case EQUALITY:
+					predicates.add( builder.equal(       from.get(key), value            ) );
+					break;
+				case NEGATION:
+					predicates.add( builder.notEqual(    from.get(key), value            ) );
+					break;
+				case GREATER_THAN:
+					predicates.add( builder.greaterThan( from.get(key), value.toString() ) );
+					break;
+				case LESS_THAN:
+					predicates.add( builder.lessThan(    from.get(key), value.toString() ) );
+					break;
+				case LIKE:
+					predicates.add( builder.like(        from.get(key), "%"+ value +"%"  ) );
+					break;
+				case STARTS_WITH:
+					predicates.add( builder.like(        from.get(key), value +"%"       ) );
+					break;
+				case ENDS_WITH:
+					predicates.add( builder.like(        from.get(key), "%"+ value       ) );
+					break;
+				case CONTAINS:
+					predicates.add( builder.like(        from.get(key), "%"+ value +"%"  ) );
+					break;
+				default:
+					break;
+				}
+			}
+
+		}catch(RuntimeException re) {
+
+			if( ! AttributePredicateHelperAccessibility.isSilentMode() ) {
+				
+				throw re;
 			}
 		}
-		
 		return this;
 	}
 	

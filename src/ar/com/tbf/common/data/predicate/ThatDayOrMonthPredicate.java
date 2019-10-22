@@ -22,7 +22,7 @@ public class ThatDayOrMonthPredicate implements SpecificPredicate{
 
 		Predicate predicate = thatDayPredicate.build(from, builder, key, value);
 		
-		if( predicate != null ) {
+		if( predicate == null ) {
 			
 			predicate = ThatMonthPredicate.build(from, builder, key, value);
 		}

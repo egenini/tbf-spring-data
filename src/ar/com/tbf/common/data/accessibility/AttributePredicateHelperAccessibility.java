@@ -32,9 +32,29 @@ public class AttributePredicateHelperAccessibility {
 		return attributePredicateHelperCollection.get().attributes.get( attributeName );
 	}
 	
+	public static void setSilentMode( boolean silent ) {
+		
+		attributePredicateHelperCollection.get().setSilentMode(silent);
+	}
+	
+	public static boolean isSilentMode( ) {
+		
+		return attributePredicateHelperCollection.get().isSilentMode();
+	}
 	public class AttributePredicateHelperCollection{
 	
+		/**
+		 * Este atributo en true evita que se lance una exepción si el valor no se puede parsear, por ej si se busca con una letra en un campo numérico.
+		 */
+		private boolean silentMode = false;
 		public Map<String, SpecificPredicate> attributes = new HashMap<String, SpecificPredicate>();
+		
+		public boolean isSilentMode() {
+			return silentMode;
+		}
+		public void setSilentMode(boolean silentMode) {
+			this.silentMode = silentMode;
+		}
 
 	}
 	
