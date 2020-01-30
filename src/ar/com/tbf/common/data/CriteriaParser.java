@@ -15,7 +15,7 @@ public class CriteriaParser {
 
 	private static Map<String, Operator> ops;
 
-	private static Pattern SpecCriteraRegex = Pattern.compile("^(\\w+?)(" + Joiner.on("|")
+	private static Pattern SpecCriteraRegex = Pattern.compile("^([a-zA-Z_\\\\.]+?)(" + Joiner.on("|")
 	.join(SearchOperation.SIMPLE_OPERATION_SET) + ")(\\p{Punct}?)(\\w+?)(\\p{Punct}?)$");
 
 	private static Pattern operationPattern = Pattern.compile("^(\\w+?)(" + Joiner.on("|")
