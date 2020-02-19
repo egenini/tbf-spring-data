@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.Predicate;
 
+import ar.com.tbf.common.data.accessibility.AtributeExpressionAccessibility;
 import ar.com.tbf.common.data.accessibility.AttributePredicateHelperAccessibility;
 
 public class GenericPredicateBuilder {
@@ -61,13 +63,15 @@ public class GenericPredicateBuilder {
 			}
 			else {
 				
+				Expression<?> expression = AtributeExpressionAccessibility.hasBuild(key) ? AtributeExpressionAccessibility.build(key, from, builder) : from.get(key); 
+				
 				switch ( operation ) {
 				
 				case EQUALITY:
-					predicates.add( builder.equal(       from.get(key), value            ) );
+					predicates.add( builder.equal(       expression, value            ) );
 					break;
 				case NEGATION:
-					predicates.add( builder.notEqual(    from.get(key), value            ) );
+					predicates.add( builder.notEqual(    expression, value            ) );
 					break;
 				case GREATER_THAN:
 					predicates.add( builder.greaterThan( from.get(key), value.toString() ) );
@@ -76,16 +80,24 @@ public class GenericPredicateBuilder {
 					predicates.add( builder.lessThan(    from.get(key), value.toString() ) );
 					break;
 				case LIKE:
-					predicates.add( builder.like(        from.get(key), "%"+ value +"%"  ) );
+					try {
+						predicates.add( builder.like(        (Expression<String>) expression, "%"+ value +"%"  ) );
+					}catch(Exception e) {}
 					break;
 				case STARTS_WITH:
-					predicates.add( builder.like(        from.get(key), value +"%"       ) );
+					try {
+						predicates.add( builder.like(        (Expression<String>) expression, value +"%"       ) );
+					}catch(Exception e) {}
 					break;
 				case ENDS_WITH:
-					predicates.add( builder.like(        from.get(key), "%"+ value       ) );
+					try {
+						predicates.add( builder.like(        (Expression<String>) expression, "%"+ value       ) );
+					}catch(Exception e) {}
 					break;
 				case CONTAINS:
-					predicates.add( builder.like(        from.get(key), "%"+ value +"%"  ) );
+					try {
+						predicates.add( builder.like(        (Expression<String>) expression, "%"+ value +"%"  ) );
+					}catch(Exception e) {}
 					break;
 				default:
 					break;
