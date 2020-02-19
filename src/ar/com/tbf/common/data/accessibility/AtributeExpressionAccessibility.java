@@ -18,6 +18,10 @@ public class AtributeExpressionAccessibility {
 
 	private static final int CASE_INSENSITIVE = 1;
 	
+	public static void addAsCaseInsensitive( String attrName ) {
+		
+		attributeExpression.get().attributes.put(attrName, CASE_INSENSITIVE);
+	}
 
 	public static boolean hasBuild( String attrName ) {
 		
