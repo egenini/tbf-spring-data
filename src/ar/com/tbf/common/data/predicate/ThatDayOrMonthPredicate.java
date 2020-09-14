@@ -7,6 +7,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.Predicate;
 
+import ar.com.tbf.common.data.SearchOperation;
+
 public class ThatDayOrMonthPredicate implements SpecificPredicate{
 
 	private ThatDayPredicate   thatDayPredicate;
@@ -28,5 +30,10 @@ public class ThatDayOrMonthPredicate implements SpecificPredicate{
 		}
 		
 		return predicate;
+	}
+
+	@Override
+	public Predicate build(SearchOperation operation, From<?, ?> from, CriteriaBuilder builder, String key, Object value) {
+		return null;
 	}
 }

@@ -8,6 +8,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.Predicate;
 
+import ar.com.tbf.common.data.SearchOperation;
+
 public class ThatDayPredicate implements SpecificPredicate{
 
 	private DateFormat dateformat = null;
@@ -47,5 +49,10 @@ public class ThatDayPredicate implements SpecificPredicate{
 		}
 		
 		return predicate;	
+	}
+
+	@Override
+	public Predicate build(SearchOperation operation, From<?, ?> from, CriteriaBuilder builder, String key, Object value) {
+		return null;
 	}
 }

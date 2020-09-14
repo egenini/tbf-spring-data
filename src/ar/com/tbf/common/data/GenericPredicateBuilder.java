@@ -13,6 +13,10 @@ import ar.com.tbf.common.data.accessibility.AttributePredicateHelperAccessibilit
 
 public class GenericPredicateBuilder {
 
+	public static final String NULL_VALUE  = "null";
+	public static final String FALSE_VALUE = "false";
+	public static final String TRUE_VALUE  = "true";
+	
 	List<Predicate> predicates = null;
 	CriteriaBuilder builder;
 	
@@ -55,11 +59,27 @@ public class GenericPredicateBuilder {
 	
 	public GenericPredicateBuilder make( SearchOperation operation, From<?, ?> from, String key ,Object value ) {
 		
+		Predicate predicate = null;
+		
 		try {
 			
 			if( AttributePredicateHelperAccessibility.has( key ) ) {
 				
-				predicates.add( AttributePredicateHelperAccessibility.get( key ).build(from, builder, key, value )  );
+				predicate = AttributePredicateHelperAccessibility.get( key ).build( operation, from, builder, key, value );
+				
+				if( predicate != null ) {
+					
+					predicates.add( predicate );
+				}
+				else {
+					
+					predicate = AttributePredicateHelperAccessibility.get( key ).build(from, builder, key, value );
+					
+					if( predicate != null ) {
+						
+						predicates.add( predicate );
+					}
+				}
 			}
 			else {
 				
@@ -68,16 +88,50 @@ public class GenericPredicateBuilder {
 				switch ( operation ) {
 				
 				case EQUALITY:
-					predicates.add( builder.equal(       expression, value            ) );
+					if( value.equals( NULL_VALUE )) {
+						
+						predicates.add( builder.isNull(       expression            ) );
+					}
+					else if( value.equals( FALSE_VALUE )) {
+						
+						predicates.add( builder.equal(       expression, false      ) );
+					}
+					else if( value.equals( TRUE_VALUE )) {
+						
+						predicates.add( builder.equal(       expression, true       ) );
+					}
+					else {
+						predicates.add( builder.equal(       expression, value      ) );
+					}
 					break;
 				case NEGATION:
-					predicates.add( builder.notEqual(    expression, value            ) );
+					if( value.equals( NULL_VALUE )) {
+						
+						predicates.add( builder.isNotNull(       expression         ) );
+					}
+					else if( value.equals( FALSE_VALUE )) {
+						
+						predicates.add( builder.notEqual(       expression, false   ) );
+					}
+					else if( value.equals( TRUE_VALUE )) {
+						
+						predicates.add( builder.notEqual(       expression, true    ) );
+					}
+					else {
+						predicates.add( builder.notEqual(       expression, value   ) );
+					}
 					break;
 				case GREATER_THAN:
-					predicates.add( builder.greaterThan( from.get(key), value.toString() ) );
+					predicates.add( builder.greaterThan(     from.get(key), value.toString()                   ) );
 					break;
 				case LESS_THAN:
-					predicates.add( builder.lessThan(    from.get(key), value.toString() ) );
+					predicates.add( builder.lessThan(        from.get(key), value.toString()                   ) );
+					break;
+				case GREATER_THAN_OR_EQUALS:
+					predicates.add( builder.greaterThanOrEqualTo(     from.get(key), value.toString()                   ) );
+					break;
+				case LESS_THAN_OR_EQUALS:
+					predicates.add( builder.lessThanOrEqualTo(        from.get(key), value.toString()                   ) );
 					break;
 				case LIKE:
 					try {

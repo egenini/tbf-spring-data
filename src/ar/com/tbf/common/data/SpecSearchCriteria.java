@@ -53,6 +53,36 @@ public class SpecSearchCriteria {
                     op = SearchOperation.ENDS_WITH;
                 }
             }
+        	else if( op == SearchOperation.GREATER_THAN ) {
+        		
+                final boolean startWithAsterisk      = prefix != null && prefix.contains( SearchOperation.ZERO_OR_MORE_REGEX );
+                final boolean valueStartWithAsterisk = value  != null && value.contains( SearchOperation.ZERO_OR_MORE_REGEX );
+                
+                if ( startWithAsterisk ) {
+                	
+                    op = SearchOperation.GREATER_THAN_OR_EQUALS;
+                }
+                else if( valueStartWithAsterisk ) {
+                	
+                	op    = SearchOperation.GREATER_THAN_OR_EQUALS;
+                	value = value.substring(1);
+                }
+        	}
+        	else if( op == SearchOperation.LESS_THAN ) {
+        		
+                final boolean startWithAsterisk      = prefix != null && prefix.contains( SearchOperation.ZERO_OR_MORE_REGEX );
+                final boolean valueStartWithAsterisk = value  != null && value.contains( SearchOperation.ZERO_OR_MORE_REGEX );
+        	
+                if ( startWithAsterisk ) {
+                	
+                	op = SearchOperation.LESS_THAN_OR_EQUALS;
+                }
+                else if( valueStartWithAsterisk ) {
+                	
+                	op    = SearchOperation.LESS_THAN_OR_EQUALS;
+                	value = value.substring(1);
+                }
+        	}
         }
         
         this.key       = key;

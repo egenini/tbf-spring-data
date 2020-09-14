@@ -14,11 +14,11 @@ import javax.persistence.criteria.Predicate;
 
 import ar.com.tbf.common.data.SearchOperation;
 
-public class ThatMonthPredicate implements SpecificPredicate{
+public class ThatYearMonthLastDayOfMonthPredicate implements SpecificPredicate{
 
 	private DateTimeFormatter dateformat;
 	
-	public ThatMonthPredicate( DateTimeFormatter dateformat ) {
+	public ThatYearMonthLastDayOfMonthPredicate( DateTimeFormatter dateformat, Calendar from ) {
 		
 		this.dateformat = dateformat;
 	}
@@ -29,21 +29,13 @@ public class ThatMonthPredicate implements SpecificPredicate{
 		
 		try {
 			
-			Timestamp date = Timestamp.valueOf( YearMonth.parse( (CharSequence)value, dateformat).atDay(1).atStartOfDay() );
+			Timestamp date = Timestamp.valueOf( YearMonth.parse( (CharSequence ) value, dateformat).atEndOfMonth().atTime(0, 0, 0) );
 			
 			Calendar init = Calendar.getInstance(  );
 			
 			init.setTime( date );
 
 			Calendar end = Calendar.getInstance();
-			
-			end.setTime( init.getTime() );
-
-			end.set( Calendar.DAY_OF_MONTH, end.getActualMaximum(Calendar.DAY_OF_MONTH) );
-			end.set( Calendar.HOUR        , 23);
-			end.set( Calendar.MINUTE      , 59);
-			end.set( Calendar.SECOND      , 59);
-			end.set( Calendar.MILLISECOND , 999);
 						
 			predicate = builder.between( from.<Date>get(key), init.getTime(), end.getTime() );
 
@@ -55,7 +47,9 @@ public class ThatMonthPredicate implements SpecificPredicate{
 	}
 
 	@Override
-	public Predicate build(SearchOperation operation, From<?, ?> from, CriteriaBuilder builder, String key, Object value) {
+	public Predicate build(SearchOperation operation, From<?, ?> from, CriteriaBuilder builder, String key,
+			Object value) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }
