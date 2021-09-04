@@ -29,9 +29,11 @@ public class SpecSearchCriteria {
         this.value       = value;
     }
 
-    public SpecSearchCriteria(String key, String operation, String prefix, String value, String suffix) {
+    public SpecSearchCriteria(String key, String operation, String prefix, Object value, String suffix) {
     	
         SearchOperation op = SearchOperation.getSimpleOperation(operation.charAt(0));
+        Object finalValue = value;
+        boolean isValueString = value instanceof String ? true : false;
         
         if (op != null) {
         
@@ -56,7 +58,7 @@ public class SpecSearchCriteria {
         	else if( op == SearchOperation.GREATER_THAN ) {
         		
                 final boolean startWithAsterisk      = prefix != null && prefix.contains( SearchOperation.ZERO_OR_MORE_REGEX );
-                final boolean valueStartWithAsterisk = value  != null && value.contains( SearchOperation.ZERO_OR_MORE_REGEX );
+                final boolean valueStartWithAsterisk = value  != null && isValueString && ((String) value).contains( SearchOperation.ZERO_OR_MORE_REGEX );
                 
                 if ( startWithAsterisk ) {
                 	
@@ -64,14 +66,16 @@ public class SpecSearchCriteria {
                 }
                 else if( valueStartWithAsterisk ) {
                 	
-                	op    = SearchOperation.GREATER_THAN_OR_EQUALS;
-                	value = value.substring(1);
+                	op         = SearchOperation.GREATER_THAN_OR_EQUALS;
+                	if( isValueString ){
+                		finalValue = ((String) value).substring(1);
+                	}
                 }
         	}
         	else if( op == SearchOperation.LESS_THAN ) {
         		
                 final boolean startWithAsterisk      = prefix != null && prefix.contains( SearchOperation.ZERO_OR_MORE_REGEX );
-                final boolean valueStartWithAsterisk = value  != null && value.contains( SearchOperation.ZERO_OR_MORE_REGEX );
+                final boolean valueStartWithAsterisk = value  != null && isValueString && ((String) value).contains( SearchOperation.ZERO_OR_MORE_REGEX );
         	
                 if ( startWithAsterisk ) {
                 	
@@ -79,15 +83,17 @@ public class SpecSearchCriteria {
                 }
                 else if( valueStartWithAsterisk ) {
                 	
-                	op    = SearchOperation.LESS_THAN_OR_EQUALS;
-                	value = value.substring(1);
+                	op         = SearchOperation.LESS_THAN_OR_EQUALS;
+                	if( isValueString ) {
+                		finalValue = ((String) value).substring(1);                		
+                	}
                 }
         	}
         }
         
         this.key       = key;
         this.operation = op;
-        this.value     = value;
+        this.value     = finalValue;
     }
 
     public String getKey() {

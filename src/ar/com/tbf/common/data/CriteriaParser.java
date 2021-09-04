@@ -52,7 +52,9 @@ public class CriteriaParser {
 
 	public Deque<?> parse(String searchParam) {
 
+		// file deepcode ignore ApiMigration: that implement Deque it is used for generate criteria.
 		Deque<Object> output = new LinkedList<>();
+		// file deepcode ignore ApiMigration: that implement Deque it is used for generate criteria.
 		Deque<String> stack = new LinkedList<>();
 
 		Arrays.stream(searchParam.split("\\s+")).forEach(token -> {
