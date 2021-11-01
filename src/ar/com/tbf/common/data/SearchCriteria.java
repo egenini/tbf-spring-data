@@ -21,11 +21,11 @@ public class SearchCriteria {
 	/**
 	 * Like
 	 */
-	public static final String CONTAINS = ":";
+	public static final String CONTAINS = "~";
 	/**
 	 * Equals
 	 */
-	public static final String EQ = "=";
+	public static final String EQ = ":";
 
 	private String key;
 	private String operation;

@@ -28,7 +28,7 @@ public class GenericSpecificationsBuilder<U> {
             if (op == SearchOperation.EQUALITY) // the operation may be complex operation
             {
                 final boolean startWithAsterisk = prefix != null && prefix.contains(SearchOperation.ZERO_OR_MORE_REGEX);
-                final boolean endWithAsterisk = suffix != null && suffix.contains(SearchOperation.ZERO_OR_MORE_REGEX);
+                final boolean endWithAsterisk   = suffix != null && suffix.contains(SearchOperation.ZERO_OR_MORE_REGEX);
 
                 if (startWithAsterisk && endWithAsterisk) {
                     op = SearchOperation.CONTAINS;
@@ -56,12 +56,7 @@ public class GenericSpecificationsBuilder<U> {
         Specification<U> result = specs.get(0);
 
         for (int idx = 1; idx < specs.size(); idx++) {
-            result = params.get(idx)
-                .isOrPredicate()
-                    ? Specification.where(result)
-                        .or(specs.get(idx))
-                    : Specification.where(result)
-                        .and(specs.get(idx));
+            result = params.get(idx).isOrPredicate() ? Specification.where(result).or(specs.get(idx)) : Specification.where(result).and(specs.get(idx));
         }
         
         return result;
